@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@babyparka — Meal Prep Menu</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #0c0c0a;
+  --surface: #141412;
+  --card: #1a1a16;
+  --border: #272720;
+  --gold: #c9a84c;
+  --gold-light: #e2c070;
+  --cream: #f0ead8;
+  --muted: #7a7568;
+  --green: #4a7c59;
+  --green-light: #6aab7d;
+  --red: #8b2c2c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Manrope', sans-serif;
+  min-height: 100vh;
+}
+
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 64px 24px 48px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,168,76,0.10) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.logo-line {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 12vw, 96px);
+  letter-spacing: 3px;
+  line-height: 1;
+  background: linear-gradient(160deg, var(--gold-light) 0%, var(--gold) 50%, #a07830 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  max-width: 400px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
+}
+
+.badge-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.badge.gold { border-color: rgba(201,168,76,0.3); color: var(--gold); }
+
+.section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.section-icon { font-size: 28px; }
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 3px;
+  line-height: 1;
+}
+
+.section-divider {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+.meal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  transition: border-color 0.25s;
+}
+
+.meal-card:hover { border-color: rgba(201,168,76,0.25); }
+
+.meal-card.featured {
+  border-color: rgba(201,168,76,0.3);
+  background: linear-gradient(135deg, #1a1a16, #1e1c12);
+}
+
+.meal-header {
+  padding: 24px 28px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.meal-info h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.meal-info .tag-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid;
+}
+
+.tag-lean { color: #6aab7d; border-color: rgba(106,171,125,0.3); background: rgba(106,171,125,0.08); }
+.tag-highpro { color: #7ab0e0; border-color: rgba(122,176,224,0.3); background: rgba(122,176,224,0.08); }
+.tag-indulgent { color: #c9a84c; border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.08); }
+
+.meal-price { text-align: right; flex-shrink: 0; }
+
+.meal-price .amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  letter-spacing: 1px;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.meal-price .per {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.meal-body {
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 560px) { .meal-body { grid-template-columns: 1fr; } }
+
+.meal-sides {
+  padding: 20px 28px;
+  border-right: 1px solid var(--border);
+}
+
+@media (max-width: 560px) {
+  .meal-sides { border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+.meal-sides-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.side-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--cream);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.side-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+.side-or {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.side-or::before, .side-or::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.macros { padding: 20px 28px; }
+
+.macros-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.macro-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.macro-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.macro-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.macro-val.cal { color: var(--gold); }
+.macro-val.pro { color: #7ab0e0; }
+.macro-val.carb { color: #b07ae0; }
+.macro-val.fat { color: #e07a7a; }
+
+.macro-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.macro-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .hero { padding: 48px 20px 36px; }
+  .hero h1 { letter-spacing: 2px; }
+  .section { padding: 40px 16px; }
+  .meal-header { padding: 18px 18px 14px; }
+  .meal-info h2 { font-size: 22px; }
+  .meal-price .amount { font-size: 34px; }
+  .meal-sides, .macros { padding: 16px 18px; }
+  .macro-grid { gap: 6px; }
+  .macro-val { font-size: 18px; }
+  .pack-card { padding: 16px; }
+  .info-card { padding: 16px 18px; }
+  .badge { font-size: 10px; padding: 5px 11px; }
+}
+
+.packs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.pack-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  transition: border-color 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.pack-card:hover { transform: translateY(-2px); border-color: rgba(201,168,76,0.3); }
+
+.pack-card.featured-pack {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, #1e1c12, #222016);
+}
+
+.pack-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: #000;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.pack-meals {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.pack-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.pack-prices { display: flex; flex-direction: column; gap: 6px; flex: 1; margin-bottom: 14px; }
+
+.pack-price-row {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  padding: 8px 10px;
+  background: var(--surface);
+  border-radius: 8px;
+  gap: 2px;
+}
+
+.pack-price-row .protein { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; }
+.pack-price-row .price { font-weight: 700; font-size: 15px; }
+.pack-price-row .per-meal { font-size: 10px; color: var(--muted); font-weight: 400; }
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+@media (max-width: 500px) { .info-grid { grid-template-columns: 1fr; } }
+
+.info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+}
+
+.info-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.info-row:last-child { border-bottom: none; }
+.info-row .label { color: var(--muted); }
+.info-row .val { font-weight: 600; }
+
+footer {
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 32px 24px;
+}
+
+footer p {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  line-height: 2;
+}
+
+footer a { color: var(--gold); text-decoration: none; }
+
+.divider { height: 1px; background: var(--border); max-width: 900px; margin: 0 auto; }
+
+.tab-row { display: flex; gap: 6px; margin-bottom: 12px; }
+
+.tab-btn {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+  transition: all 0.2s;
+}
+
+.tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+.order-btn {
+  width: 100%;
+  margin-top: 14px;
+  padding: 11px;
+  border-radius: 10px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.order-btn:hover { background: var(--gold); color: #000; }
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #272720;
+}
+.cart-item:last-of-type { border-bottom: none; }
+.cart-item-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+.cart-item-price { font-size: 11px; color: #7a7568; letter-spacing: 0.5px; }
+
+.cart-stepper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #0f0e0c;
+  border: 1px solid #272720;
+  border-radius: 100px;
+  padding: 6px 14px;
+}
+.step-btn {
+  background: none;
+  border: none;
+  color: #c9a84c;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 24px;
+  text-align: center;
+}
+.step-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  color: #f0ead8;
+  min-width: 20px;
+  text-align: center;
+}
+.delivery-toggle {
+  padding: 7px 14px;
+  border-radius: 100px;
+  border: 1px solid #272720;
+  background: transparent;
+  color: #7a7568;
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.delivery-toggle.active {
+  background: #c9a84c;
+  color: #000;
+  border-color: #c9a84c;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo-line"><a href="https://instagram.com/babyparka" target="_blank" style="color:var(--gold);text-decoration:none;">@babyparka</a></div>
+  <h1>Meal Prep Menu</h1>
+  <p class="hero-sub">Fresh, fire, made-to-order. Real ingredients. Real macros. No shortcuts.</p>
+  <div class="badge-row">
+    <div class="badge gold">🔥 Cook to Order</div>
+    <div class="badge">📦 10-Meal Minimum</div>
+    <div class="badge">🚗 Pickup or Delivery</div>
+  </div>
+</div>
+
+<!-- CHICKEN -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🍗</div>
+    <div class="section-title" style="color:var(--gold-light)">Chicken Dinner</div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="meal-card featured">
+    <div class="meal-header">
+      <div class="meal-info">
+        <h2>Grilled Chicken Breast</h2>
+        <div class="tag-row">
+          <span class="tag tag-lean">Lean</span>
+          <span class="tag tag-highpro">High Protein</span>
+        </div>
+      </div>
+      <div class="meal-price">
+        <div class="amount">$15.50</div>
+        <div class="per">per meal</div>
+      </div>
+    </div>
+
+    <div class="meal-body">
+      <div class="meal-sides">
+        <div class="meal-sides-title">Choose Your Sides</div>
+
+        <div class="side-option"><span class="side-dot"></span> Cilantro Lime Rice (143g)</div>
+        <div class="side-option"><span class="side-dot"></span> Fire Roasted Veggies (85g)</div>
+
+        <div class="side-or">or</div>
+
+        <div class="side-option"><span class="side-dot"></span> Black Beans (½ cup)</div>
+        <div class="side-option"><span class="side-dot"></span> Corn (½ cup)</div>
+        <div class="side-option"><span class="side-dot"></span> Peppers & Onions</div>
+        <div style="margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6;">
+          Kirkland boneless skinless chicken breast, 6oz per meal. Costco sourced, cooked to order.
+        </div>
+      </div>
+
+      <div class="macros">
+        <div class="macros-title">Nutrition Facts · 6oz Chicken</div>
+        <div class="tab-row">
+          <button class="tab-btn active" onclick="switchTab('c','rice',this)">Rice & Veggies</button>
+          <button class="tab-btn" onclick="switchTab('c','beans',this)">Beans & Corn</button>
+        </div>
+
+        <div id="c-rice" class="macro-set active">
+          <div class="macro-grid">
+            <div class="macro-item"><div class="macro-val cal">445</div><div class="macro-label">Cal</div></div>
+            <div class="macro-item"><div class="macro-val pro">49g</div><div class="macro-label">Protein</div></div>
+            <div class="macro-item"><div class="macro-val carb">47g</div><div class="macro-label">Carbs</div></div>
+            <div class="macro-item"><div class="macro-val fat">9g</div><div class="macro-label">Fat</div></div>
+          </div>
+          <div class="macro-note">Chicken + Cilantro Lime Rice + Fire Roasted Veggies</div>
+        </div>
+
+        <div id="c-beans" class="macro-set">
+          <div class="macro-grid">
+            <div class="macro-item"><div class="macro-val cal">400</div><div class="macro-label">Cal</div></div>
+            <div class="macro-item"><div class="macro-val pro">55g</div><div class="macro-label">Protein</div></div>
+            <div class="macro-item"><div class="macro-val carb">44g</div><div class="macro-label">Carbs</div></div>
+            <div class="macro-item"><div class="macro-val fat">4g</div><div class="macro-label">Fat</div></div>
+          </div>
+          <div class="macro-note">Chicken + Black Beans + Corn + Peppers & Onions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SEAFOOD -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🐟</div>
+    <div class="section-title" style="color:#5ba4cf">Seafood Dinner</div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="meal-card">
+    <div class="meal-header">
+      <div class="meal-info">
+        <h2>Blackened Salmon + Tilapia</h2>
+        <div class="tag-row">
+          <span class="tag tag-highpro">High Protein</span>
+          <span class="tag" style="color:#5ba4cf;border-color:rgba(91,164,207,0.3);background:rgba(91,164,207,0.08);">Omega-3 Rich</span>
+        </div>
+      </div>
+      <div class="meal-price">
+        <div class="amount" style="color:#5ba4cf">$18.50</div>
+        <div class="per">per meal</div>
+      </div>
+    </div>
+
+    <div class="meal-body">
+      <div class="meal-sides">
+        <div class="meal-sides-title">What's Included</div>
+        <div class="side-option"><span class="side-dot" style="background:#e8a020"></span> Blackened Atlantic Salmon (5.35oz)</div>
+        <div class="side-option"><span class="side-dot" style="background:#5ba4cf"></span> Farm Raised Tilapia (4oz)</div>
+        <div class="side-option"><span class="side-dot" style="background:#5ba4cf"></span> Homemade Garlic Mashed Potatoes (143g)</div>
+        <div class="side-option"><span class="side-dot" style="background:#5ba4cf"></span> Fire Roasted Veggies (85g)</div>
+        <div style="margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6;">
+          Two filets per meal. Costco sourced, cooked to order.
+        </div>
+      </div>
+
+      <div class="macros">
+        <div class="macros-title">Nutrition Facts · Full Plate</div>
+        <div class="macro-grid">
+          <div class="macro-item"><div class="macro-val cal" style="color:#5ba4cf">604</div><div class="macro-label">Cal</div></div>
+          <div class="macro-item"><div class="macro-val pro">54g</div><div class="macro-label">Protein</div></div>
+          <div class="macro-item"><div class="macro-val carb">27g</div><div class="macro-label">Carbs</div></div>
+          <div class="macro-item"><div class="macro-val fat">28g</div><div class="macro-label">Fat</div></div>
+        </div>
+        <div class="macro-note">Blackened Salmon + Tilapia + Garlic Mashed Potatoes + Fire Roasted Veggies. Fat content is healthy omega-3s from the salmon 🐟</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- STEAK -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🥩</div>
+    <div class="section-title" style="color:#d4856a">Steak Dinner</div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="meal-card">
+    <div class="meal-header">
+      <div class="meal-info">
+        <h2>USDA Ribeye</h2>
+        <div class="tag-row">
+          <span class="tag tag-indulgent">Premium Cut</span>
+          <span class="tag tag-highpro">High Protein</span>
+        </div>
+      </div>
+      <div class="meal-price">
+        <div class="amount" style="color:#d4856a">$21.00</div>
+        <div class="per">per meal</div>
+      </div>
+    </div>
+
+    <div class="meal-body">
+      <div class="meal-sides">
+        <div class="meal-sides-title">Included Sides</div>
+        <div class="side-option"><span class="side-dot" style="background:#d4856a"></span> Homemade Garlic Mashed Potatoes (143g)</div>
+        <div class="side-option"><span class="side-dot" style="background:#d4856a"></span> Fire Roasted Veggies (85g)</div>
+        <div style="margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6;">
+          Kirkland USDA Choice Ribeye, 6oz per meal. Costco sourced, cooked to order.
+        </div>
+      </div>
+
+      <div class="macros">
+        <div class="macros-title">Nutrition Facts · 6oz Ribeye</div>
+        <div class="macro-grid">
+          <div class="macro-item"><div class="macro-val cal" style="color:#d4856a">544</div><div class="macro-label">Cal</div></div>
+          <div class="macro-item"><div class="macro-val pro">32g</div><div class="macro-label">Protein</div></div>
+          <div class="macro-item"><div class="macro-val carb">26g</div><div class="macro-label">Carbs</div></div>
+          <div class="macro-item"><div class="macro-val fat">33g</div><div class="macro-label">Fat</div></div>
+        </div>
+        <div class="macro-note">Ribeye + Garlic Mashed Potatoes + Fire Roasted Veggies. Higher fat content is natural to ribeye — it's what makes it 🔥</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PACKS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">📦</div>
+    <div class="section-title">Build My Order</div>
+    <div class="section-divider"></div>
+  </div>
+
+  <p style="font-size:12px;color:var(--muted);margin-bottom:24px;line-height:1.7;">The more you order, the more you save. All packs include your choice of proteins — mix however you like in units of 10.</p>
+
+  <div class="packs-grid">
+
+    <!-- 10-PACK -->
+    <div class="pack-card">
+      <div class="pack-meals">10</div>
+      <div class="pack-label">Meals · Minimum Order</div>
+      <div class="pack-prices">
+        <div class="pack-price-row"><span class="protein">🍗 Chicken</span><span class="price">$155</span><span class="per-meal">$15.50 / meal</span></div>
+        <div class="pack-price-row"><span class="protein">🐟 Seafood</span><span class="price">$185</span><span class="per-meal">$18.50 / meal</span></div>
+        <div class="pack-price-row"><span class="protein">🥩 Ribeye</span><span class="price">$210</span><span class="per-meal">$21.00 / meal</span></div>
+      </div>
+      <button class="order-btn" onclick="openCart(10)">Build My Order →</button>
+    </div>
+
+    <!-- 20-PACK -->
+    <div class="pack-card">
+      <div class="pack-meals">20</div>
+      <div class="pack-label">Meals · Save $0.50/meal</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green-light);margin-bottom:10px;">$10 savings vs base</div>
+      <div class="pack-prices">
+        <div class="pack-price-row"><span class="protein">🍗 Chicken</span><span class="price">$300</span><span class="per-meal">$15.00 / meal</span></div>
+        <div class="pack-price-row"><span class="protein">🐟 Seafood</span><span class="price">$360</span><span class="per-meal">$18.00 / meal</span></div>
+        <div class="pack-price-row"><span class="protein">🥩 Ribeye</span><span class="price">$410</span><span class="per-meal">$20.50 / meal</span></div>
+      </div>
+      <button class="order-btn" onclick="openCart(20)">Build My Order →</button>
+    </div>
+
+    <!-- 30-PACK -->
+    <div class="pack-card">
+      <div class="pack-meals">30</div>
+      <div class="pack-label">Meals · Save $1.00/meal</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green-light);margin-bottom:10px;">$30 savings vs base</div>
+      <div class="pack-prices">
+        <div class="pack-price-row"><span class="protein">🍗 Chicken</span><span class="price">$435</span><span class="per-meal">$14.50 / meal</span></div>
+        <div class="pack-price-row"><span class="protein">🐟 Seafood</span><span class="price">$525</span><span class="per-meal">$17.50 / meal</span></div>
+        <div class="pack-price-row"><span class="protein">🥩 Ribeye</span><span class="price">$600</span><span class="per-meal">$20.00 / meal</span></div>
+      </div>
+      <button class="order-btn" onclick="openCart(30)">Build My Order →</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- TIPS & STORAGE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">💡</div>
+    <div class="section-title">Good to Know</div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
+
+    <div class="info-card">
+      <h3>🧊 Storage</h3>
+      <div class="info-row"><span class="label">Refrigerator</span><span class="val">Up to 5 days</span></div>
+      <div class="info-row"><span class="label">Freezer</span><span class="val">Up to 3 months</span></div>
+      <div class="info-row"><span class="label">Containers</span><span class="val">Freezer safe ✓</span></div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.7;border-top:1px solid var(--border);padding-top:10px;">
+        💡 <strong style="color:var(--cream)">Pro tip:</strong> Refrigerate what you'll eat this week — freeze the rest. Pull meals from the freezer into the fridge 1–2 days before you need them.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>🔥 Reheating Tips</h3>
+      <div class="info-row"><span class="label">Microwave</span><span class="val">2–3 min covered</span></div>
+      <div class="info-row"><span class="label">From frozen</span><span class="val">Thaw overnight first</span></div>
+      <div class="info-row"><span class="label">Best method</span><span class="val">Stovetop low heat</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3>📝 Order Tips</h3>
+      <div class="info-row"><span class="label">Notice needed</span><span class="val">48 hrs ahead</span></div>
+      <div class="info-row"><span class="label">Specify sides</span><span class="val">At time of order</span></div>
+      <div class="info-row"><span class="label">Add-ons</span><span class="val">Text after checkout</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CART MODAL -->
+<div id="cartOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="max-width:480px;margin:0 auto;min-height:100%;display:flex;align-items:flex-start;padding:20px 16px 60px;">
+    <div style="background:#1a1a16;border:1px solid #2e2b22;border-radius:20px;width:100%;overflow:hidden;">
+
+      <!-- Cart Header -->
+      <div style="padding:24px 24px 16px;border-bottom:1px solid #272720;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:#c9a84c;" id="cart-title">Build Your 10-Pack</div>
+          <div style="font-size:11px;color:#7a7568;letter-spacing:1px;text-transform:uppercase;margin-top:2px;" id="cart-subtitle">Select in units of 10 · Must total 10</div>
+        </div>
+        <button onclick="closeCart()" style="background:none;border:none;color:#7a7568;font-size:24px;cursor:pointer;padding:4px;line-height:1;">✕</button>
+      </div>
+
+      <!-- Discount Badge -->
+      <div id="discount-badge" style="display:none;background:linear-gradient(135deg,#1a2e1a,#1e361e);border-bottom:1px solid #2a402a;padding:10px 24px;font-size:12px;color:#6aab7d;font-weight:600;letter-spacing:0.5px;"></div>
+
+      <!-- Meal Selectors -->
+      <div style="padding:20px 24px;">
+
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">🍗 Chicken</div>
+            <div class="cart-item-price" id="chicken-price-label">$15.50/meal</div>
+          </div>
+          <div class="cart-stepper">
+            <button class="step-btn" onclick="updateMeal('chicken',-10)">−</button>
+            <span class="step-val" id="chicken-qty">0</span>
+            <button class="step-btn" onclick="updateMeal('chicken',10)">+</button>
+          </div>
+        </div>
+
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">🐟 Seafood</div>
+            <div class="cart-item-price" id="seafood-price-label">$18.50/meal</div>
+          </div>
+          <div class="cart-stepper">
+            <button class="step-btn" onclick="updateMeal('seafood',-10)">−</button>
+            <span class="step-val" id="seafood-qty">0</span>
+            <button class="step-btn" onclick="updateMeal('seafood',10)">+</button>
+          </div>
+        </div>
+
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">🥩 Ribeye Steak</div>
+            <div class="cart-item-price" id="steak-price-label">$21.00/meal</div>
+          </div>
+          <div class="cart-stepper">
+            <button class="step-btn" onclick="updateMeal('steak',-10)">−</button>
+            <span class="step-val" id="steak-qty">0</span>
+            <button class="step-btn" onclick="updateMeal('steak',10)">+</button>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div style="margin:20px 0 8px;">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#7a7568;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">
+            <span>Meals Selected</span>
+            <span id="meal-count">0 / 10</span>
+          </div>
+          <div style="background:#272720;border-radius:100px;height:6px;overflow:hidden;">
+            <div id="progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#c9a84c,#e2c070);border-radius:100px;transition:width 0.3s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Delivery -->
+        <div class="cart-item" style="margin-top:8px;">
+          <div class="cart-item-info">
+            <div class="cart-item-name">🚗 Delivery</div>
+            <div class="cart-item-price">+$10.00 flat</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="delivery-toggle active" id="btn-pickup" onclick="setDelivery(false)">Pickup</button>
+            <button class="delivery-toggle" id="btn-delivery" onclick="setDelivery(true)">Deliver</button>
+          </div>
+        </div>
+
+        <!-- Total -->
+        <div style="background:#0f0e0c;border:1px solid #272720;border-radius:12px;padding:16px 18px;margin-top:20px;">
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#7a7568;margin-bottom:8px;">
+            <span>Subtotal</span><span id="subtotal">$0.00</span>
+          </div>
+          <div id="savings-row" style="display:none;justify-content:space-between;font-size:13px;color:#6aab7d;margin-bottom:8px;">
+            <span>Pack savings</span><span id="savings-val"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#7a7568;margin-bottom:12px;">
+            <span id="delivery-label">Pickup</span><span id="delivery-cost">$0.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:22px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;color:#c9a84c;border-top:1px solid #272720;padding-top:12px;">
+            <span>Total</span><span id="order-total">$0.00</span>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <button id="checkout-btn" onclick="goCheckout()" disabled style="width:100%;margin-top:16px;padding:18px;border-radius:14px;border:none;background:#2e2b22;color:#7a7568;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:not-allowed;transition:all 0.3s;">
+          SELECT MEALS TO CONTINUE
+        </button>
+
+        <p style="text-align:center;font-size:11px;color:#7a7568;margin-top:12px;line-height:1.6;">
+          After checkout, text your sides preference & add-ons to <a href="sms:6155219705" style="color:#c9a84c;">615-521-9705</a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="divider"></div>
+
+<!-- ADD-ONS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">➕</div>
+    <div class="section-title">Add-Ons</div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+
+    <!-- CHICKEN ADD-ONS -->
+    <div class="info-card">
+      <h3>🍗 Extra Chicken</h3>
+      <div class="info-row">
+        <span class="label">+2oz chicken breast</span>
+        <span class="val" style="color:var(--gold)">$2.00 <span style="color:var(--muted);font-size:11px;font-weight:400">· +14.5g protein</span></span>
+      </div>
+      <div class="info-row">
+        <span class="label">+4oz chicken breast</span>
+        <span class="val" style="color:var(--gold)">$3.50 <span style="color:var(--muted);font-size:11px;font-weight:400">· +29g protein</span></span>
+      </div>
+    </div>
+
+    <!-- SEAFOOD ADD-ONS -->
+    <div class="info-card">
+      <h3>🐟 Extra Seafood</h3>
+      <div class="info-row">
+        <span class="label">+1 salmon filet (5.35oz)</span>
+        <span class="val" style="color:#5ba4cf">$7.00 <span style="color:var(--muted);font-size:11px;font-weight:400">· +29g protein</span></span>
+      </div>
+      <div class="info-row">
+        <span class="label">+1 tilapia filet (4oz)</span>
+        <span class="val" style="color:#5ba4cf">$4.00 <span style="color:var(--muted);font-size:11px;font-weight:400">· +21g protein</span></span>
+      </div>
+    </div>
+
+    <!-- STEAK ADD-ONS -->
+    <div class="info-card">
+      <h3>🥩 Extra Ribeye</h3>
+      <div class="info-row">
+        <span class="label">+2oz ribeye</span>
+        <span class="val" style="color:#d4856a">$7.00 <span style="color:var(--muted);font-size:11px;font-weight:400">· +9.3g protein</span></span>
+      </div>
+      <div class="info-row">
+        <span class="label">+4oz ribeye</span>
+        <span class="val" style="color:#d4856a">$13.00 <span style="color:var(--muted);font-size:11px;font-weight:400">· +18.7g protein</span></span>
+      </div>
+    </div>
+
+  </div>
+  <p style="font-size:11px;color:var(--muted);margin-top:16px;line-height:1.6;">Add-ons are per meal and must be requested at time of order. Text 615-521-9705 to customize your pack.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ORDER INFO -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <div class="section-title">Order Info</div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>🚗 Pickup vs Delivery</h3>
+      <div class="info-row"><span class="label">Pickup</span><span class="val">No added fee</span></div>
+      <div class="info-row"><span class="label">Delivery</span><span class="val">+$10 flat fee</span></div>
+      <div class="info-row"><span class="label">Area</span><span class="val">Atlanta metro</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3>📅 How to Order</h3>
+      <div class="info-row"><span class="label">Minimum</span><span class="val">10 meals</span></div>
+      <div class="info-row"><span class="label">Notice</span><span class="val">48 hrs ahead</span></div>
+      <div class="info-row"><span class="label">Text</span><span class="val">615-521-9705</span></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>
+    All meals cooked fresh to order · Kirkland & Costco sourced proteins<br>
+    <a href="https://instagram.com/babyparka" target="_blank">@babyparka</a> · Atlanta, GA<br>
+    <br>
+    <span style="font-size:10px;color:#4a4a40;">Macros are estimates based on raw product nutrition labels. Actual values may vary slightly based on cooking method and seasoning.</span>
+  </p>
+</footer>
+
+<script>
+  function switchTab(meal, side, btn) {
+    const allBtns = btn.closest('.tab-row').querySelectorAll('.tab-btn');
+    allBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const macrosBlock = btn.closest('.macros');
+    macrosBlock.querySelectorAll('.macro-set').forEach(s => s.classList.remove('active'));
+    document.getElementById(meal + '-' + side).classList.add('active');
+  }
+
+  const basePrices = { chicken: 15.50, seafood: 18.50, steak: 21.00 };
+  const discounts = { 10: 0, 20: 0.50, 30: 1.00 };
+  let cartSize = 10;
+  let qty = { chicken: 0, seafood: 0, steak: 0 };
+  let delivery = false;
+
+  function getPrices() {
+    const d = discounts[cartSize] || 0;
+    return {
+      chicken: basePrices.chicken - d,
+      seafood: basePrices.seafood - d,
+      steak: basePrices.steak - d
+    };
+  }
+
+  function openCart(size) {
+    cartSize = size;
+    qty = { chicken: 0, seafood: 0, steak: 0 };
+    delivery = false;
+    document.getElementById('btn-pickup').classList.add('active');
+    document.getElementById('btn-delivery').classList.remove('active');
+    document.getElementById('cart-title').textContent = 'Build Your ' + size + '-Pack';
+    document.getElementById('cart-subtitle').textContent = 'Select in units of 10 · Must total ' + size;
+
+    const d = discounts[size];
+    const badge = document.getElementById('discount-badge');
+    if (d > 0) {
+      badge.style.display = 'block';
+      badge.textContent = '🎉 ' + size + '-pack deal: $' + d.toFixed(2) + ' off per meal — saving you $' + (d * size).toFixed(0) + ' total';
+    } else {
+      badge.style.display = 'none';
+    }
+
+    const p = getPrices();
+    document.getElementById('chicken-price-label').textContent = '$' + p.chicken.toFixed(2) + '/meal';
+    document.getElementById('seafood-price-label').textContent = '$' + p.seafood.toFixed(2) + '/meal';
+    document.getElementById('steak-price-label').textContent = '$' + p.steak.toFixed(2) + '/meal';
+
+    document.getElementById('cartOverlay').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    render();
+  }
+
+  function closeCart() {
+    document.getElementById('cartOverlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function updateMeal(protein, delta) {
+    const total = qty.chicken + qty.seafood + qty.steak;
+    const newVal = qty[protein] + delta;
+    if (newVal < 0) return;
+    if (delta > 0 && total >= cartSize) return;
+    qty[protein] = newVal;
+    render();
+  }
+
+  function setDelivery(val) {
+    delivery = val;
+    document.getElementById('btn-pickup').classList.toggle('active', !val);
+    document.getElementById('btn-delivery').classList.toggle('active', val);
+    render();
+  }
+
+  function render() {
+    const p = getPrices();
+    const total = qty.chicken + qty.seafood + qty.steak;
+    const subtotal = qty.chicken * p.chicken + qty.seafood * p.seafood + qty.steak * p.steak;
+    const d = discounts[cartSize];
+    const savings = d * total;
+    const deliveryCost = delivery ? 10 : 0;
+    const grand = subtotal + deliveryCost;
+
+    document.getElementById('chicken-qty').textContent = qty.chicken;
+    document.getElementById('seafood-qty').textContent = qty.seafood;
+    document.getElementById('steak-qty').textContent = qty.steak;
+    document.getElementById('meal-count').textContent = total + ' / ' + cartSize;
+    document.getElementById('progress-bar').style.width = (total / cartSize * 100) + '%';
+    document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+    document.getElementById('delivery-label').textContent = delivery ? 'Delivery' : 'Pickup';
+    document.getElementById('delivery-cost').textContent = delivery ? '+$10.00' : '$0.00';
+    document.getElementById('order-total').textContent = '$' + grand.toFixed(2);
+
+    const savingsRow = document.getElementById('savings-row');
+    if (d > 0 && total > 0) {
+      savingsRow.style.display = 'flex';
+      document.getElementById('savings-val').textContent = '-$' + savings.toFixed(2);
+    } else {
+      savingsRow.style.display = 'none';
+    }
+
+    const btn = document.getElementById('checkout-btn');
+    if (total === cartSize) {
+      btn.disabled = false;
+      btn.style.background = 'linear-gradient(135deg, #c9a84c, #e2c070)';
+      btn.style.color = '#000';
+      btn.style.cursor = 'pointer';
+      btn.textContent = 'CHECKOUT — $' + grand.toFixed(2);
+    } else {
+      btn.disabled = true;
+      btn.style.background = '#2e2b22';
+      btn.style.color = '#7a7568';
+      btn.style.cursor = 'not-allowed';
+      btn.textContent = 'SELECT ' + cartSize + ' MEALS TO CONTINUE';
+    }
+  }
+
+  async function goCheckout() {
+    const total = qty.chicken + qty.seafood + qty.steak;
+    if (total !== cartSize) return;
+
+    const btn = document.getElementById('checkout-btn');
+    btn.textContent = 'PROCESSING...';
+    btn.disabled = true;
+
+    const items = [
+      { protein: 'chicken', qty: qty.chicken },
+      { protein: 'seafood',  qty: qty.seafood },
+      { protein: 'steak',    qty: qty.steak },
+    ].filter(i => i.qty > 0);
+
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items, delivery, cartSize }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert('Something went wrong: ' + (data.error || 'Unknown error'));
+        btn.disabled = false;
+        renderCheckoutBtn();
+      }
+    } catch (err) {
+      alert('Could not connect to checkout. Please try again.');
+      btn.disabled = false;
+      renderCheckoutBtn();
+    }
+  }
+
+  window.addEventListener('load', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success')) {
+      const banner = document.createElement('div');
+      banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:3000;background:linear-gradient(135deg,#1a2e1a,#1e361e);border-bottom:1px solid #2a402a;padding:16px 24px;text-align:center;font-family:Manrope,sans-serif;';
+      banner.innerHTML = '<span style="color:#6aab7d;font-weight:700;font-size:14px;">✅ Order confirmed! Text 615-521-9705 with your sides preference.</span> <button onclick="this.parentElement.remove()" style="margin-left:16px;background:none;border:none;color:#6aab7d;font-size:18px;cursor:pointer;">✕</button>';
+      document.body.prepend(banner);
+      window.history.replaceState({}, '', '/');
+    }
+    if (params.get('cancelled')) {
+      const banner = document.createElement('div');
+      banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:3000;background:#1a1010;border-bottom:1px solid #3a2020;padding:16px 24px;text-align:center;font-family:Manrope,sans-serif;';
+      banner.innerHTML = '<span style="color:#e07a7a;font-weight:700;font-size:14px;">Order cancelled — your cart is still saved.</span> <button onclick="this.parentElement.remove()" style="margin-left:16px;background:none;border:none;color:#e07a7a;font-size:18px;cursor:pointer;">✕</button>';
+      document.body.prepend(banner);
+      window.history.replaceState({}, '', '/');
+    }
+  });
+
+    const total = qty.chicken + qty.seafood + qty.steak;
+    const p = getPrices();
+    const subtotal = qty.chicken * p.chicken + qty.seafood * p.seafood + qty.steak * p.steak;
+    const grand = subtotal + (delivery ? 10 : 0);
+    const btn = document.getElementById('checkout-btn');
+    if (total === cartSize) {
+      btn.disabled = false;
+      btn.style.background = 'linear-gradient(135deg, #c9a84c, #e2c070)';
+      btn.style.color = '#000';
+      btn.style.cursor = 'pointer';
+      btn.textContent = 'CHECKOUT — $' + grand.toFixed(2);
+    }
+  }
+
+</script>
+</body>
+</html>
