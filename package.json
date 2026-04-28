@@ -1,8 +1,0 @@
-{
-  "name": "babyparka-meal-prep",
-  "version": "1.0.0",
-  "description": "@babyparka meal prep menu",
-  "dependencies": {
-    "stripe": "^14.0.0"
-  }
-}
