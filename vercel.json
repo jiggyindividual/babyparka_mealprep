@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/checkout.js", "use": "@vercel/node" },
+    { "src": "api/admin.js", "use": "@vercel/node" },
+    { "src": "api/combos.js", "use": "@vercel/node" },
+    { "src": "public/index.html", "use": "@vercel/static" },
+    { "src": "admin/index.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/checkout", "dest": "/api/checkout.js" },
+    { "src": "/api/admin", "dest": "/api/admin.js" },
+    { "src": "/api/combos", "dest": "/api/combos.js" },
+    { "src": "/admin", "dest": "/admin/index.html" },
+    { "src": "/(.*)", "dest": "/public/index.html" }
+  ]
+}
