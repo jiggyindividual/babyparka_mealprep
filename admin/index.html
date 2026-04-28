@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@babyparka — Admin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #0a0a08;
+  --surface: #111110;
+  --card: #161614;
+  --card2: #1c1c19;
+  --border: #242420;
+  --gold: #c9a84c;
+  --gold-light: #e2c070;
+  --cream: #f0ead8;
+  --muted: #6a6560;
+  --green: #4a7c59;
+  --green-light: #6aab7d;
+  --red: #c0392b;
+  --red-light: #e07a7a;
+  --blue: #5ba4cf;
+  --purple: #9b7ae0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Manrope', sans-serif;
+  min-height: 100vh;
+}
+
+/* LOGIN */
+#loginScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%);
+}
+
+.login-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.login-box h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.login-box p { font-size: 12px; color: var(--muted); margin-bottom: 28px; letter-spacing: 1px; }
+
+.login-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--cream);
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  padding: 14px 16px;
+  outline: none;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+
+.login-input:focus { border-color: var(--gold); }
+
+.login-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: #000;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.login-error { color: var(--red-light); font-size: 12px; margin-top: 10px; }
+
+/* DASHBOARD */
+#dashboard { display: none; }
+
+/* TOP BAR */
+.topbar {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: var(--gold);
+}
+
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
+.sync-btn {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sync-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+.logout-btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* NAV TABS */
+.nav-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 16px 24px 0;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.nav-tab {
+  padding: 10px 20px;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.nav-tab.active {
+  background: var(--card2);
+  border-color: var(--border);
+  border-bottom-color: var(--card2);
+  color: var(--gold);
+  margin-bottom: -1px;
+}
+
+/* CONTENT */
+.content { padding: 24px; max-width: 1200px; margin: 0 auto; }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* STAT GRID */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  transition: border-color 0.2s;
+}
+
+.stat-card:hover { border-color: rgba(201,168,76,0.2); }
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 1px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-sub { font-size: 11px; color: var(--muted); }
+
+/* AI INSIGHT CARD */
+.insight-card {
+  background: linear-gradient(135deg, #0f1a0f, #141e14);
+  border: 1px solid rgba(106,171,125,0.2);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.insight-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
+.insight-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--green-light);
+  margin-bottom: 6px;
+}
+
+.insight-text { font-size: 13px; color: var(--cream); line-height: 1.6; }
+
+.insight-loading { color: var(--muted); font-style: italic; font-size: 12px; }
+
+/* SECTION TITLE */
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin: 24px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+/* BADGES */
+.badge-small {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.badge-green { background: rgba(106,171,125,0.15); color: var(--green-light); }
+.badge-gold { background: rgba(201,168,76,0.15); color: var(--gold); }
+.badge-red { background: rgba(192,57,43,0.15); color: var(--red-light); }
+.badge-blue { background: rgba(91,164,207,0.15); color: var(--blue); }
+.badge-purple { background: rgba(155,122,224,0.15); color: var(--purple); }
+
+/* CHARGE PANEL */
+.charge-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.charge-panel h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+
+.field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.field input, .field select, .field textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--cream);
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+.field select option { background: #161614; }
+
+.charge-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: #000;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: opacity 0.2s;
+}
+
+.charge-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.charge-result {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  display: none;
+}
+
+.charge-result.success { background: rgba(106,171,125,0.15); color: var(--green-light); border: 1px solid rgba(106,171,125,0.3); }
+.charge-result.error { background: rgba(192,57,43,0.15); color: var(--red-light); border: 1px solid rgba(192,57,43,0.3); }
+
+/* COMBO CARDS */
+.combo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.combo-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.combo-card:hover { border-color: rgba(201,168,76,0.25); transform: translateY(-2px); }
+
+.combo-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.combo-temp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+}
+
+.combo-hot { background: rgba(192,57,43,0.15); color: #e07a7a; border: 1px solid rgba(192,57,43,0.2); }
+.combo-cold { background: rgba(91,164,207,0.15); color: #5ba4cf; border: 1px solid rgba(91,164,207,0.2); }
+
+.combo-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.combo-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.combo-body { padding: 16px 20px; }
+
+.combo-ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.combo-ingredient {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--cream);
+}
+
+.combo-macros {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.combo-macro {
+  text-align: center;
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 8px 6px;
+}
+
+.combo-macro-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.combo-macro-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.combo-footer {
+  border-top: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.combo-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 1px;
+  color: var(--gold);
+}
+
+.combo-price-note {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.combo-season {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.bar-chart { display: flex; flex-direction: column; gap: 10px; }
+
+.bar-row { display: flex; align-items: center; gap: 12px; }
+.bar-label { font-size: 12px; color: var(--muted); width: 120px; flex-shrink: 0; text-align: right; }
+.bar-track { flex: 1; background: var(--surface); border-radius: 100px; height: 8px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 100px; transition: width 1s ease; }
+.bar-val { font-size: 12px; font-weight: 700; width: 60px; }
+
+/* DONUT */
+.donut-wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.donut-legend { display: flex; flex-direction: column; gap: 8px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* EMPTY STATE */
+.empty { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
+
+/* LOADING */
+.loading-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  color: var(--gold);
+}
+
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 16px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>@babyparka</h1>
+    <p>ADMIN DASHBOARD · PRIVATE ACCESS</p>
+    <input class="login-input" type="password" id="passwordInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()">
+    <button class="login-btn" onclick="login()">ENTER DASHBOARD</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+  <div class="topbar">
+    <div class="topbar-title">⚡ BABYPARKA ADMIN</div>
+    <div class="topbar-right">
+      <button class="sync-btn" onclick="loadData()">↻ Sync Stripe</button>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('overview')">📊 Overview</button>
+    <button class="nav-tab" onclick="switchTab('customers')">👥 Customers</button>
+    <button class="nav-tab" onclick="switchTab('orders')">📦 Orders</button>
+    <button class="nav-tab" onclick="switchTab('insights')">🧠 AI Insights</button>
+    <button class="nav-tab" onclick="switchTab('combos')">🥗 Combos</button>
+    <button class="nav-tab" onclick="switchTab('charge')">💳 Charge</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="content">
+    <div id="tab-overview" class="tab-panel active">
+
+      <div class="stat-grid" id="statGrid">
+        <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-val" id="s-revenue">—</div><div class="stat-sub">all time</div></div>
+        <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-val" id="s-orders">—</div><div class="stat-sub">completed</div></div>
+        <div class="stat-card"><div class="stat-label">Total Customers</div><div class="stat-val" id="s-customers">—</div><div class="stat-sub">unique</div></div>
+        <div class="stat-card"><div class="stat-label">Avg Order Value</div><div class="stat-val" id="s-aov">—</div><div class="stat-sub">per order</div></div>
+        <div class="stat-card"><div class="stat-label">Avg Order Freq</div><div class="stat-val" id="s-freq">—</div><div class="stat-sub">days between orders</div></div>
+        <div class="stat-card"><div class="stat-label">Delivery Rate</div><div class="stat-val" id="s-delivery">—</div><div class="stat-sub">vs pickup</div></div>
+        <div class="stat-card"><div class="stat-label">Repeat Rate</div><div class="stat-val" id="s-repeat">—</div><div class="stat-sub">ordered 2+ times</div></div>
+        <div class="stat-card"><div class="stat-label">Ghosted</div><div class="stat-val" id="s-ghosted" style="color:var(--red-light)">—</div><div class="stat-sub">1 order, never returned</div></div>
+        <div class="stat-card"><div class="stat-label">Revenue/lb Meat</div><div class="stat-val" id="s-yield" style="color:var(--green-light)">—</div><div class="stat-sub">yield efficiency</div></div>
+        <div class="stat-card"><div class="stat-label">Best Day</div><div class="stat-val" style="font-size:22px" id="s-bestday">—</div><div class="stat-sub">most orders placed</div></div>
+        <div class="stat-card"><div class="stat-label">LTV Top Client</div><div class="stat-val" id="s-ltv" style="color:var(--gold)">—</div><div class="stat-sub">highest lifetime value</div></div>
+        <div class="stat-card"><div class="stat-label">Protein Explorer %</div><div class="stat-val" id="s-explorer">—</div><div class="stat-sub">mix vs single protein</div></div>
+      </div>
+
+      <div class="section-title">🍽️ Best Selling Proteins</div>
+      <div class="table-wrap" style="padding:20px;">
+        <div class="bar-chart" id="proteinChart"></div>
+      </div>
+
+      <div class="section-title">🚗 Delivery vs Pickup</div>
+      <div class="table-wrap" style="padding:20px;">
+        <div class="donut-wrap">
+          <canvas id="donutCanvas" width="140" height="140"></canvas>
+          <div class="donut-legend" id="donutLegend"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CUSTOMERS -->
+    <div id="tab-customers" class="tab-panel">
+      <div class="section-title">👥 All Customers</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Orders</th>
+              <th>Total Spent</th>
+              <th>Last Order</th>
+              <th>Status</th>
+              <th>Saved Card</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="customersTable"><tr><td colspan="7" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div id="tab-orders" class="tab-panel">
+      <div class="section-title">📦 Order History</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Order</th>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Pack Size</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- AI INSIGHTS -->
+    <div id="tab-insights" class="tab-panel">
+      <div class="section-title">🧠 AI Strategy Insights</div>
+      <div id="insightsContainer">
+        <div class="empty">Load data first to generate insights.</div>
+      </div>
+    </div>
+
+    <!-- COMBOS -->
+    <div id="tab-combos" class="tab-panel">
+      <div class="section-title">🥗 AI Combo Suggestions</div>
+
+      <div style="background:linear-gradient(135deg,#0f1a0f,#141e14);border:1px solid rgba(106,171,125,0.2);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green-light);margin-bottom:4px;">AI-Powered · Updates Every Session</div>
+          <div style="font-size:13px;color:var(--cream);line-height:1.6;">Claude analyzes your proteins, current season, and macro targets to suggest high-protein, low-calorie combos — including pricing and serving suggestions.</div>
+        </div>
+        <button onclick="generateCombos()" style="padding:10px 20px;border-radius:10px;border:1px solid var(--green-light);background:transparent;color:var(--green-light);font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;cursor:pointer;white-space:nowrap;">↺ Refresh Combos</button>
+      </div>
+
+      <div id="combosContainer">
+        <div class="empty">Loading combo suggestions...</div>
+      </div>
+    </div>
+
+    <!-- CHARGE -->
+    <div id="tab-charge" class="tab-panel">
+      <div class="section-title">💳 Charge a Customer</div>
+
+      <div class="charge-panel">
+        <h3>New Charge</h3>
+        <div class="field-row">
+          <div class="field">
+            <label>Select Customer</label>
+            <select id="chargeCustomer" onchange="onCustomerSelect()">
+              <option value="">— Choose customer —</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Saved Card</label>
+            <input type="text" id="chargeCardDisplay" readonly placeholder="Select customer first" style="color:var(--muted)">
+            <input type="hidden" id="chargePaymentMethod">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Amount ($)</label>
+            <input type="number" id="chargeAmount" placeholder="e.g. 155.00" step="0.01" min="1">
+          </div>
+          <div class="field">
+            <label>Note / Order Description</label>
+            <input type="text" id="chargeNote" placeholder="e.g. Chicken 10-pack, pickup">
+          </div>
+        </div>
+        <button class="charge-btn" id="chargeBtnMain" onclick="submitCharge()">CHARGE CUSTOMER</button>
+        <div class="charge-result" id="chargeResult"></div>
+      </div>
+
+      <div class="section-title">Recent Charges</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Note</th><th>Status</th></tr></thead>
+          <tbody id="adminChargesTable"><tr><td colspan="5" class="empty">No admin charges yet.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let password = '';
+let allOrders = [];
+let allCustomers = [];
+
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+// ─── AUTH ────────────────────────────────────────────────────────────────────
+function login() {
+  const pw = document.getElementById('passwordInput').value;
+  if (!pw) return;
+  password = pw;
+  loadData();
+}
+
+function logout() {
+  password = '';
+  allOrders = [];
+  allCustomers = [];
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('dashboard').style.display = 'none';
+}
+
+// ─── DATA LOADING ─────────────────────────────────────────────────────────────
+async function loadData() {
+  showLoading(true);
+  try {
+    const res = await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'get_dashboard', password }),
+    });
+    const data = await res.json();
+    if (res.status === 401) {
+      document.getElementById('loginError').textContent = 'Wrong password.';
+      showLoading(false);
+      return;
+    }
+    if (data.error) throw new Error(data.error);
+
+    allOrders = data.orders || [];
+    allCustomers = data.customers || [];
+
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+
+    renderOverview();
+    renderCustomers();
+    renderOrders();
+    renderChargeCustomers();
+    generateInsights();
+  } catch (err) {
+    document.getElementById('loginError').textContent = 'Error: ' + err.message;
+  }
+  showLoading(false);
+}
+
+// ─── OVERVIEW ────────────────────────────────────────────────────────────────
+function renderOverview() {
+  const totalRevenue = allOrders.reduce((s, o) => s + o.amount, 0) / 100;
+  const totalOrders = allOrders.length;
+  const uniqueEmails = [...new Set(allOrders.map(o => o.customerEmail).filter(Boolean))];
+  const aov = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+
+  // Delivery rate
+  const deliveryOrders = allOrders.filter(o => o.deliveryType === 'Delivery').length;
+  const deliveryRate = totalOrders > 0 ? Math.round(deliveryOrders / totalOrders * 100) : 0;
+
+  // Repeat customers
+  const emailCounts = {};
+  allOrders.forEach(o => {
+    if (o.customerEmail) emailCounts[o.customerEmail] = (emailCounts[o.customerEmail] || 0) + 1;
+  });
+  const repeatCount = Object.values(emailCounts).filter(c => c >= 2).length;
+  const repeatRate = uniqueEmails.length > 0 ? Math.round(repeatCount / uniqueEmails.length * 100) : 0;
+  const ghosted = Object.values(emailCounts).filter(c => c === 1).length;
+
+  // Best day
+  const dayCounts = {};
+  allOrders.forEach(o => {
+    const day = DAYS[new Date(o.created * 1000).getDay()];
+    dayCounts[day] = (dayCounts[day] || 0) + 1;
+  });
+  const bestDay = Object.entries(dayCounts).sort((a,b) => b[1]-a[1])[0]?.[0] || '—';
+
+  // LTV
+  const emailRevenue = {};
+  allOrders.forEach(o => {
+    if (o.customerEmail) emailRevenue[o.customerEmail] = (emailRevenue[o.customerEmail] || 0) + o.amount / 100;
+  });
+  const topLTV = Math.max(...Object.values(emailRevenue), 0);
+
+  // Protein explorer % — customers who ordered multiple protein types
+  const customerProteins = {};
+  allOrders.forEach(o => {
+    const summary = (o.orderSummary || '').toLowerCase();
+    const email = o.customerEmail || o.id;
+    if (!customerProteins[email]) customerProteins[email] = new Set();
+    if (summary.includes('chicken')) customerProteins[email].add('chicken');
+    if (summary.includes('seafood')) customerProteins[email].add('seafood');
+    if (summary.includes('ribeye') || summary.includes('steak')) customerProteins[email].add('steak');
+  });
+  const explorerCount = Object.values(customerProteins).filter(s => s.size > 1).length;
+  const explorerPct = Object.keys(customerProteins).length > 0
+    ? Math.round(explorerCount / Object.keys(customerProteins).length * 100) : 0;
+
+  // Avg frequency
+  const emailDates = {};
+  allOrders.forEach(o => {
+    if (!o.customerEmail) return;
+    if (!emailDates[o.customerEmail]) emailDates[o.customerEmail] = [];
+    emailDates[o.customerEmail].push(o.created);
+  });
+  const freqs = Object.values(emailDates)
+    .filter(dates => dates.length > 1)
+    .map(dates => {
+      dates.sort();
+      const gaps = dates.slice(1).map((d, i) => (d - dates[i]) / 86400);
+      return gaps.reduce((a, b) => a + b, 0) / gaps.length;
+    });
+  const avgFreq = freqs.length > 0 ? Math.round(freqs.reduce((a,b)=>a+b,0)/freqs.length) : 0;
+
+  // Revenue per lb (rough estimate based on avg meal cost)
+  const avgMealRevenue = aov / 10; // assume 10-pack
+  const revenuePerLb = avgMealRevenue > 0 ? (avgMealRevenue / 0.375).toFixed(2) : '—'; // 6oz = 0.375lb
+
+  setText('s-revenue', '$' + totalRevenue.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}));
+  setText('s-orders', totalOrders);
+  setText('s-customers', allCustomers.length || uniqueEmails.length);
+  setText('s-aov', '$' + aov.toFixed(2));
+  setText('s-freq', avgFreq ? avgFreq + 'd' : '—');
+  setText('s-delivery', deliveryRate + '%');
+  setText('s-repeat', repeatRate + '%');
+  setText('s-ghosted', ghosted);
+  setText('s-yield', revenuePerLb !== '—' ? '$' + revenuePerLb : '—');
+  setText('s-bestday', bestDay.slice(0,3).toUpperCase());
+  setText('s-ltv', topLTV > 0 ? '$' + topLTV.toFixed(0) : '—');
+  setText('s-explorer', explorerPct + '%');
+
+  renderProteinChart();
+  renderDonut(deliveryOrders, totalOrders - deliveryOrders);
+}
+
+function renderProteinChart() {
+  const counts = { Chicken: 0, Seafood: 0, Ribeye: 0 };
+  allOrders.forEach(o => {
+    const s = (o.orderSummary || '').toLowerCase();
+    const parts = s.split(',');
+    parts.forEach(p => {
+      const match = p.match(/(\w+)\s*x(\d+)/);
+      if (!match) return;
+      const protein = match[1];
+      const qty = parseInt(match[2]);
+      if (protein === 'chicken') counts.Chicken += qty;
+      if (protein === 'seafood') counts.Seafood += qty;
+      if (protein === 'steak' || protein === 'ribeye') counts.Ribeye += qty;
+    });
+  });
+
+  const max = Math.max(...Object.values(counts), 1);
+  const colors = { Chicken: '#e8a020', Seafood: '#5ba4cf', Ribeye: '#c0392b' };
+  const total = Object.values(counts).reduce((a,b) => a+b, 0) || 1;
+
+  document.getElementById('proteinChart').innerHTML = Object.entries(counts)
+    .sort((a,b) => b[1]-a[1])
+    .map(([name, count]) => `
+      <div class="bar-row">
+        <div class="bar-label">${name}</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${count/max*100}%;background:${colors[name]}"></div>
+        </div>
+        <div class="bar-val" style="color:${colors[name]}">${count} <span style="color:var(--muted);font-weight:400">(${Math.round(count/total*100)}%)</span></div>
+      </div>
+    `).join('');
+}
+
+function renderDonut(delivery, pickup) {
+  const canvas = document.getElementById('donutCanvas');
+  const ctx = canvas.getContext('2d');
+  const total = delivery + pickup || 1;
+  const cx = 70, cy = 70, r = 55, inner = 32;
+
+  ctx.clearRect(0, 0, 140, 140);
+
+  const segments = [
+    { val: delivery, color: '#c9a84c', label: 'Delivery', pct: Math.round(delivery/total*100) },
+    { val: pickup, color: '#5ba4cf', label: 'Pickup', pct: Math.round(pickup/total*100) },
+  ];
+
+  let angle = -Math.PI / 2;
+  segments.forEach(seg => {
+    const sweep = (seg.val / total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, angle, angle + sweep);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    angle += sweep;
+  });
+
+  // Hole
+  ctx.beginPath();
+  ctx.arc(cx, cy, inner, 0, Math.PI * 2);
+  ctx.fillStyle = '#161614';
+  ctx.fill();
+
+  document.getElementById('donutLegend').innerHTML = segments.map(s => `
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${s.color}"></div>
+      <span><strong>${s.label}</strong> — ${s.pct}% (${s.val === delivery ? delivery : pickup} orders)</span>
+    </div>
+  `).join('');
+}
+
+// ─── CUSTOMERS ───────────────────────────────────────────────────────────────
+function renderCustomers() {
+  const tbody = document.getElementById('customersTable');
+  if (!allCustomers.length && !allOrders.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">No customers yet.</td></tr>';
+    return;
+  }
+
+  // Build from orders if no customers in Stripe yet
+  const emailMap = {};
+  allOrders.forEach(o => {
+    const key = o.customerEmail || o.id;
+    if (!emailMap[key]) emailMap[key] = { name: o.customerName, email: o.customerEmail, orders: [], savedCard: null };
+    emailMap[key].orders.push(o);
+  });
+
+  // Merge with Stripe customers
+  allCustomers.forEach(c => {
+    const key = c.email || c.id;
+    if (!emailMap[key]) emailMap[key] = { name: c.name, email: c.email, orders: c.orders || [], savedCard: c.savedCard, stripeId: c.id };
+    else { emailMap[key].savedCard = c.savedCard; emailMap[key].stripeId = c.id; }
+  });
+
+  const rows = Object.values(emailMap).sort((a,b) => b.orders.length - a.orders.length);
+
+  tbody.innerHTML = rows.map(c => {
+    const spent = c.orders.reduce((s, o) => s + o.amount, 0) / 100;
+    const lastOrder = c.orders.length ? new Date(Math.max(...c.orders.map(o => o.created * 1000))).toLocaleDateString() : '—';
+    const status = c.orders.length >= 3 ? '<span class="badge-small badge-green">VIP</span>'
+      : c.orders.length >= 2 ? '<span class="badge-small badge-gold">Repeat</span>'
+      : '<span class="badge-small badge-red">One-time</span>';
+    const card = c.savedCard ? `<span class="badge-small badge-blue">${c.savedCard.brand.toUpperCase()} ···${c.savedCard.last4}</span>` : '<span style="color:var(--muted);font-size:11px">No card</span>';
+    const chargeBtn = c.savedCard && c.stripeId
+      ? `<button onclick="quickCharge('${c.stripeId}','${c.savedCard.id}','${c.name}','${c.savedCard.brand} ···${c.savedCard.last4}')" style="padding:5px 12px;border-radius:6px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer;">Charge</button>`
+      : '—';
+    return `<tr>
+      <td><strong>${c.name || 'Unknown'}</strong><br><span style="color:var(--muted);font-size:11px">${c.email || ''}</span></td>
+      <td>${c.orders.length}</td>
+      <td style="color:var(--gold);font-weight:700">$${spent.toFixed(2)}</td>
+      <td>${lastOrder}</td>
+      <td>${status}</td>
+      <td>${card}</td>
+      <td>${chargeBtn}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── ORDERS ──────────────────────────────────────────────────────────────────
+function renderOrders() {
+  const tbody = document.getElementById('ordersTable');
+  if (!allOrders.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">No orders yet.</td></tr>';
+    return;
+  }
+
+  const sorted = [...allOrders].sort((a,b) => b.created - a.created);
+  tbody.innerHTML = sorted.map(o => {
+    const date = new Date(o.created * 1000).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
+    const amount = '$' + (o.amount/100).toFixed(2);
+    const typeColor = o.deliveryType === 'Delivery' ? 'badge-gold' : 'badge-blue';
+    return `<tr>
+      <td>${date}</td>
+      <td>${o.customerName || o.customerEmail || 'Unknown'}</td>
+      <td style="font-size:12px;color:var(--muted)">${o.orderSummary || '—'}</td>
+      <td style="font-weight:700;color:var(--green-light)">${amount}</td>
+      <td><span class="badge-small ${typeColor}">${o.deliveryType}</span></td>
+      <td><span class="badge-small badge-purple">${o.cartSize ? o.cartSize+'-pack' : '—'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── AI INSIGHTS ─────────────────────────────────────────────────────────────
+async function generateInsights() {
+  const container = document.getElementById('insightsContainer');
+  container.innerHTML = '<div class="insight-card"><div class="insight-icon">🧠</div><div><div class="insight-title">Generating insights...</div><div class="insight-loading">Analyzing your business data with AI...</div></div></div>';
+
+  const totalRevenue = allOrders.reduce((s, o) => s + o.amount, 0) / 100;
+  const emailCounts = {};
+  allOrders.forEach(o => { if(o.customerEmail) emailCounts[o.customerEmail] = (emailCounts[o.customerEmail]||0)+1; });
+  const ghosted = Object.values(emailCounts).filter(c => c === 1).length;
+  const repeat = Object.values(emailCounts).filter(c => c >= 2).length;
+  const deliveryPct = allOrders.length ? Math.round(allOrders.filter(o=>o.deliveryType==='Delivery').length/allOrders.length*100) : 0;
+
+  const prompt = `You are a business advisor for @babyparka, a solo meal prep business in Atlanta run by one person selling high-quality Costco-sourced meal preps (chicken $15.50, seafood $18.50, ribeye $21). 
+
+Here is their current business data:
+- Total revenue: $${totalRevenue.toFixed(2)}
+- Total orders: ${allOrders.length}
+- Unique customers: ${Object.keys(emailCounts).length}
+- Repeat customers: ${repeat}
+- One-time (ghosted) customers: ${ghosted}
+- Delivery rate: ${deliveryPct}%
+
+Give exactly 5 specific, actionable, unconventional business insights and growth strategies. Be direct, street-smart, and specific to a meal prep hustle. Format each insight as JSON in this array:
+[{"icon":"emoji","title":"SHORT TITLE","insight":"2-3 sentence specific insight and strategy"}]
+
+Only return the JSON array, nothing else.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '[]';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const insights = JSON.parse(clean);
+
+    container.innerHTML = insights.map(i => `
+      <div class="insight-card">
+        <div class="insight-icon">${i.icon}</div>
+        <div>
+          <div class="insight-title">${i.title}</div>
+          <div class="insight-text">${i.insight}</div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    container.innerHTML = `<div class="insight-card"><div class="insight-icon">⚠️</div><div><div class="insight-title">Could not load insights</div><div class="insight-text">Sync your Stripe data and try again.</div></div></div>`;
+  }
+}
+
+// ─── CHARGE ───────────────────────────────────────────────────────────────────
+function renderChargeCustomers() {
+  const sel = document.getElementById('chargeCustomer');
+  sel.innerHTML = '<option value="">— Choose customer —</option>';
+  allCustomers.filter(c => c.savedCard).forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.dataset.pmId = c.savedCard.id;
+    opt.dataset.card = `${c.savedCard.brand.toUpperCase()} ···${c.savedCard.last4}`;
+    opt.textContent = `${c.name || c.email} — ${c.savedCard.brand} ···${c.savedCard.last4}`;
+    sel.appendChild(opt);
+  });
+}
+
+function onCustomerSelect() {
+  const sel = document.getElementById('chargeCustomer');
+  const opt = sel.options[sel.selectedIndex];
+  document.getElementById('chargeCardDisplay').value = opt.dataset.card || '';
+  document.getElementById('chargePaymentMethod').value = opt.dataset.pmId || '';
+}
+
+function quickCharge(customerId, pmId, name, card) {
+  switchTab('charge');
+  const sel = document.getElementById('chargeCustomer');
+  for (const opt of sel.options) {
+    if (opt.value === customerId) { sel.value = customerId; break; }
+  }
+  document.getElementById('chargeCardDisplay').value = card;
+  document.getElementById('chargePaymentMethod').value = pmId;
+  document.getElementById('chargeAmount').focus();
+}
+
+async function submitCharge() {
+  const customerId = document.getElementById('chargeCustomer').value;
+  const pmId = document.getElementById('chargePaymentMethod').value;
+  const amount = document.getElementById('chargeAmount').value;
+  const note = document.getElementById('chargeNote').value;
+  const resultEl = document.getElementById('chargeResult');
+  const btn = document.getElementById('chargeBtnMain');
+
+  if (!customerId || !pmId || !amount) {
+    resultEl.className = 'charge-result error';
+    resultEl.style.display = 'block';
+    resultEl.textContent = 'Please select a customer and enter an amount.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'PROCESSING...';
+  resultEl.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'charge_customer', password, customerId, paymentMethodId: pmId, amount, note }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      resultEl.className = 'charge-result success';
+      resultEl.textContent = `✅ Charged $${parseFloat(amount).toFixed(2)} successfully! Payment ID: ${data.paymentIntentId}`;
+      document.getElementById('chargeAmount').value = '';
+      document.getElementById('chargeNote').value = '';
+    } else {
+      resultEl.className = 'charge-result error';
+      resultEl.textContent = '❌ Charge failed: ' + (data.error || 'Unknown error');
+    }
+  } catch(e) {
+    resultEl.className = 'charge-result error';
+    resultEl.textContent = '❌ Error: ' + e.message;
+  }
+
+  resultEl.style.display = 'block';
+  btn.disabled = false;
+  btn.textContent = 'CHARGE CUSTOMER';
+  loadData();
+}
+
+// ─── COMBOS ───────────────────────────────────────────────────────────────────
+async function generateCombos() {
+  const container = document.getElementById('combosContainer');
+  container.innerHTML = '<div class="insight-card"><div class="insight-icon">🥗</div><div><div class="insight-title">Generating combos...</div><div class="insight-loading">Claude is building seasonal high-protein combos for your menu...</div></div></div>';
+
+  const now = new Date();
+  const month = now.toLocaleString('default', { month: 'long' });
+  const season = ['December','January','February'].includes(month) ? 'Winter'
+    : ['March','April','May'].includes(month) ? 'Spring'
+    : ['June','July','August'].includes(month) ? 'Summer' : 'Fall';
+
+  const prompt = `You are a meal prep nutrition expert and business advisor for @babyparka, a premium Atlanta meal prep business. Current month: ${month} (${season}).
+
+Their available proteins and ingredients:
+- Grilled Chicken Breast (6oz = 165 cal, 43.5g protein, 0g carb, 0.8g fat) — $15.50/meal
+- Blackened Atlantic Salmon (5.35oz = 300 cal, 29g protein, 1g carb, 20g fat) — part of seafood combo
+- Farm Raised Tilapia (4oz = 110 cal, 21g protein, 0g carb, 3g fat) — part of seafood combo
+- USDA Choice Ribeye (6oz = 350 cal, 28g protein, 0g carb, 28g fat) — $21/meal
+- Garlic Mashed Potatoes (143g = 154 cal, 3g fat, 19.5g carb, 3.1g protein)
+- Cilantro Lime Rice (143g = 240 cal, 6g fat, 41g carb, 4g protein)
+- Black Beans (½ cup = 130 cal, 0.5g fat, 23g carb, 8g protein)
+- Fire Roasted Veggies (85g = 40 cal, 2g fat, 6g carb, 1g protein)
+- Corn (½ cup = 65 cal, 1g fat, 15g carb, 2g protein)
+- Peppers & Onions
+
+Generate exactly 6 creative meal combo suggestions optimized for HIGH PROTEIN and LOW CALORIES using ONLY the ingredients above. Include a mix of hot and cold meals. Make them seasonal and interesting. Consider suggesting a price increase or premium protein add-on option where it makes sense.
+
+Return ONLY a valid JSON array with exactly this structure, no other text:
+[{
+  "name": "Combo Name",
+  "description": "1-2 sentence description, why it works for the season and goals",
+  "temp": "hot" or "cold",
+  "season": "${season} pick · reason why",
+  "ingredients": ["ingredient 1 with portion", "ingredient 2 with portion"],
+  "macros": { "calories": 000, "protein": "00g", "carbs": "00g", "fat": "00g" },
+  "suggestedPrice": "$00.00",
+  "priceNote": "vs base $15.50 or $18.50 — why this price",
+  "proteinTip": "one line tip to boost protein further"
+}]`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '[]';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const combos = JSON.parse(clean);
+
+    const macroColors = { calories: '#c9a84c', protein: '#7ab0e0', carbs: '#b07ae0', fat: '#e07a7a' };
+
+    container.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <div style="font-size:12px;color:var(--muted);">🌿 ${season} Edition · ${month} ${now.getFullYear()} · Updated just now</div>
+        <div style="display:flex;gap:8px;">
+          <span class="combo-temp-badge combo-hot">🔥 Hot meals</span>
+          <span class="combo-temp-badge combo-cold">🧊 Cold meals</span>
+        </div>
+      </div>
+      <div class="combo-grid">
+        ${combos.map(c => `
+          <div class="combo-card">
+            <div class="combo-header">
+              <div class="combo-temp-badge ${c.temp === 'hot' ? 'combo-hot' : 'combo-cold'}">
+                ${c.temp === 'hot' ? '🔥 Hot' : '🧊 Cold'}
+              </div>
+              <div class="combo-name">${c.name}</div>
+              <div class="combo-desc">${c.description}</div>
+            </div>
+            <div class="combo-body">
+              <div class="combo-ingredients">
+                ${(c.ingredients || []).map(i => `<span class="combo-ingredient">${i}</span>`).join('')}
+              </div>
+              <div class="combo-macros">
+                <div class="combo-macro"><div class="combo-macro-val" style="color:${macroColors.calories}">${c.macros.calories}</div><div class="combo-macro-label">Cal</div></div>
+                <div class="combo-macro"><div class="combo-macro-val" style="color:${macroColors.protein}">${c.macros.protein}</div><div class="combo-macro-label">Protein</div></div>
+                <div class="combo-macro"><div class="combo-macro-val" style="color:${macroColors.carbs}">${c.macros.carbs}</div><div class="combo-macro-label">Carbs</div></div>
+                <div class="combo-macro"><div class="combo-macro-val" style="color:${macroColors.fat}">${c.macros.fat}</div><div class="combo-macro-label">Fat</div></div>
+              </div>
+              <div style="background:rgba(106,171,125,0.08);border:1px solid rgba(106,171,125,0.15);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--green-light);line-height:1.5;">
+                💡 <strong>Protein tip:</strong> ${c.proteinTip}
+              </div>
+            </div>
+            <div class="combo-footer">
+              <div>
+                <div class="combo-price">${c.suggestedPrice}</div>
+                <div class="combo-price-note">${c.priceNote}</div>
+              </div>
+              <div class="combo-season">${c.season}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } catch(e) {
+    container.innerHTML = `<div class="insight-card"><div class="insight-icon">⚠️</div><div><div class="insight-title">Could not generate combos</div><div class="insight-text">${e.message}</div></div></div>`;
+  }
+}
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event?.target?.classList.add('active');
+  if (name === 'combos') generateCombos();
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function showLoading(show) {
+  const existing = document.getElementById('loadingOverlay');
+  if (show && !existing) {
+    const el = document.createElement('div');
+    el.id = 'loadingOverlay';
+    el.className = 'loading-overlay';
+    el.innerHTML = '<div class="spinner"></div>LOADING...';
+    document.body.appendChild(el);
+  } else if (!show && existing) {
+    existing.remove();
+  }
+}
+</script>
+</body>
+</html>
